@@ -610,24 +610,25 @@ class LLMClient:
     
     def _format_analysis_result(self, content, analysis_type):
         """格式化分析结果
-        
+
         Args:
             content: 原始内容
             analysis_type: 分析类型
-            
+
         Returns:
             str: 格式化的HTML
         """
+        # 先处理 content 中的换行符
+        processed_content = content.replace('\n\n', '</p><p>').replace('\n- ', '</p><li>').replace('\n', '<br>')
         # 增强HTML格式化
         html = f'''
         <div style="font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif; padding: 15px; line-height: 1.5;">
             <h2 style="color: #1976D2; border-bottom: 1px solid #E0E0E0; padding-bottom: 8px;">{analysis_type}结果</h2>
             <div style="padding: 10px 0;">
-                {content.replace('\n\n', '</p><p>').replace('\n- ', '</p><li>').replace('\n', '<br>')}
+                {processed_content}
             </div>
         </div>
         '''
-        
         return html
     
     def _mock_analysis(self, news_item, analysis_type):
